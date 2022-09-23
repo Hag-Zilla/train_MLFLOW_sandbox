@@ -46,6 +46,10 @@ data = pd.DataFrame(d, columns=cols)
 import mlflow
 import mlflow.sklearn
 
+# prédéfinit le chemin où vous souhaitez stocker vos sauvegardes des runs 
+path = "/home/ubuntu/train_DST_MLFLOW/mlruns" 
+mlflow.set_tracking_uri("file://"+ path)
+print(mlflow.get_tracking_uri() )
 
 # Evaluate metrics
 def eval_metrics(actual, pred):
@@ -120,3 +124,5 @@ if __name__ == "__main__":
 
     # Log artifacts (output files)
     mlflow.log_artifact("ElasticNet-paths.png")
+
+    print(mlflow.get_tracking_uri() )
