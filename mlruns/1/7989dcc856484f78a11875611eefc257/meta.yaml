@@ -1,0 +1,15 @@
+artifact_uri: file:///home/ubuntu/train_DST_MLFLOW/mlruns/1/7989dcc856484f78a11875611eefc257/artifacts
+end_time: 1664109104512
+entry_point_name: ''
+experiment_id: '1'
+lifecycle_stage: active
+name: ''
+run_id: 7989dcc856484f78a11875611eefc257
+run_uuid: 7989dcc856484f78a11875611eefc257
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1664109100540
+status: 3
+tags: []
+user_id: ubuntu
