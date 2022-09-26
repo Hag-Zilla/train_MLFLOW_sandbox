@@ -65,7 +65,7 @@ if __name__ == "__main__":
     np.random.seed(40)
 
     # Manage the experiment Ids an names
-    experiment_name = "ElasticNet" 
+    experiment_name = "ElasticNet_diabetes" 
 
     try:
         experiment_id = mlflow.create_experiment(experiment_name)
