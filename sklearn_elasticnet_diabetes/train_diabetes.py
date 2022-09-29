@@ -64,7 +64,7 @@ if __name__ == "__main__":
     warnings.filterwarnings("ignore")
     np.random.seed(40)
 
-    # Manage the experiment Ids an names
+    # Manage the experiment Ids names
     experiment_name = "ElasticNet_diabetes" 
 
     try:

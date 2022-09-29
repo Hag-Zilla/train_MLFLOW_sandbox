@@ -1,5 +1,6 @@
-import mlflow
+# URI and experiment Ids management tester
 
+import mlflow
 
 # Set the path of .mlruns
 path = "/home/ubuntu/train_DST_MLFLOW/mlruns" 

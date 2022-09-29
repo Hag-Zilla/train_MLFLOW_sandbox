@@ -1,4 +1,4 @@
-name: tutorial_mlflow
+name: tutorial
 channels:
   - conda-forge
 dependencies:
