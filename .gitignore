@@ -1,2 +1,4 @@
 /mlflow
 /mlruns
+mlflow.db
+/artifacts

@@ -5,7 +5,6 @@
 import os
 import warnings
 import sys
-
 import pandas as pd
 import numpy as np
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
@@ -14,19 +13,24 @@ from sklearn.linear_model import ElasticNet
 from urllib.parse import urlparse
 import mlflow
 import mlflow.sklearn
-
 import logging
 
 
-# prédéfinit le chemin où vous souhaitez stocker vos sauvegardes des runs 
+# Storage mode configuration 
+storage_mode = 'db' # 'file' (in mlruns directory) or 'db' (in sqlite db)
 path = "/home/ubuntu/train_DST_MLFLOW/mlruns" 
-mlflow.set_tracking_uri("file://"+ path)
-print(mlflow.get_tracking_uri() )
+if storage_mode == 'file':
+    mlflow.set_tracking_uri("file://"+ path)
+elif storage_mode == 'db':
+    mlflow.set_tracking_uri("http://localhost:5000")
+# Just for debug
+print("Tracking URI : ",mlflow.get_tracking_uri())
 
+# Logger section
 logging.basicConfig(level=logging.WARN)
 logger = logging.getLogger(__name__)
 
-
+# Metric definition
 def eval_metrics(actual, pred):
     rmse = np.sqrt(mean_squared_error(actual, pred))
     mae = mean_absolute_error(actual, pred)
@@ -105,4 +109,4 @@ if __name__ == "__main__":
             # https://mlflow.org/docs/latest/model-registry.html#api-workflow
             mlflow.sklearn.log_model(lr, "model", registered_model_name="ElasticnetWineModel")
         else:
-            mlflow.sklearn.log_model(lr, "model")
+            mlflow.sklearn.log_model(lr, "/home/ubuntu/train_DST_MLFLOW/artifacts", registered_model_name="ElasticnetWineModel")
