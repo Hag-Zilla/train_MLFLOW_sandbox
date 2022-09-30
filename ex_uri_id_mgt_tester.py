@@ -1,9 +1,37 @@
-# URI and experiment Ids management tester
+#############################################################################################################################
+#                                                   ex_uri_id_mgt_tester                                                    #
+#############################################################################################################################
+
+# ================================================          Header           ================================================
+
+"""
+
+Title : ex_uri_id_mgt_tester.py
+Init craft date : 30/09/2022
+Handcraft with love and sweat by : Damien Mascheix @Hagzilla
+Notes :
+    URI and experiment Ids management tester
+
+"""
+# ================================================       Optimisations        ================================================
+
+""" 
+Blablabla
+
+"""
+
+# ================================================    Modules import     =====================================================
 
 import mlflow
 
+# ================================================          Functions          ================================================
+
+""" Nothing there """
+
+# ================================================          Warfield          ================================================
+
 # Storage mode configuration 
-storage_mode = 'db' # 'file' (in mlruns directory) or 'db' (in sqlite db)
+storage_mode = 'file' # 'file' (in mlruns directory) or 'db' (in sqlite db)
 path = "/home/ubuntu/train_DST_MLFLOW/mlruns" 
 if storage_mode == 'file':
     mlflow.set_tracking_uri("file://"+ path)

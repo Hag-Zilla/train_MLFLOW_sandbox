@@ -1,34 +1,69 @@
-# The data set used in this example is from http://archive.ics.uci.edu/ml/datasets/Wine+Quality
-# P. Cortez, A. Cerdeira, F. Almeida, T. Matos and J. Reis.
-# Modeling wine preferences by data mining from physicochemical properties. In Decision Support Systems, Elsevier, 47(4):547-553, 2009.
+#############################################################################################################################
+#                                                       train_wine                                                      #
+#############################################################################################################################
 
-import os
+# ================================================          Header           ================================================
+
+"""
+
+Title : train_wine.py
+Init craft date : 30/09/2022
+Handcraft with love and sweat by : Damien Mascheix @Hagzilla
+Notes :
+    MLflow model using ElasticNet (sklearn).
+
+    The data set used in this example is from http://archive.ics.uci.edu/ml/datasets/Wine+Quality
+    P. Cortez, A. Cerdeira, F. Almeida, T. Matos and J. Reis.
+    Modeling wine preferences by data mining from physicochemical properties. In Decision Support Systems, Elsevier, 47(4):547-553, 2009.
+
+    Usage:
+    python train_wine.py 0.01 0.01
+    python train_wine.py 0.5 0.75
+    python train_wine.py 0.01 1.0
+
+"""
+# ================================================       Optimisations        ================================================
+
+""" 
+Blablabla
+
+"""
+
+# ================================================    Modules import     =====================================================
+
+
+
+
+# Script timing
+import time
+start_time = time.time()
+
+# Classics
 import warnings
 import sys
 import pandas as pd
 import numpy as np
+import logging
+from itertools import cycle
+
+# URL management
+from urllib.parse import urlparse
+
+# MLFLOW
+import mlflow
+import mlflow.sklearn
+
+
+# Modeling
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import ElasticNet
-from urllib.parse import urlparse
-import mlflow
-import mlflow.sklearn
-import logging
+from sklearn import datasets
 
+#VIZ
+import matplotlib.pyplot as plt
 
-# Storage mode configuration 
-storage_mode = 'db' # 'file' (in mlruns directory) or 'db' (in sqlite db)
-path = "/home/ubuntu/train_DST_MLFLOW/mlruns" 
-if storage_mode == 'file':
-    mlflow.set_tracking_uri("file://"+ path)
-elif storage_mode == 'db':
-    mlflow.set_tracking_uri("http://localhost:5000")
-# Just for debug
-print("Tracking URI : ",mlflow.get_tracking_uri())
-
-# Logger section
-logging.basicConfig(level=logging.WARN)
-logger = logging.getLogger(__name__)
+# ================================================          Functions          ================================================
 
 # Metric definition
 def eval_metrics(actual, pred):
@@ -37,11 +72,33 @@ def eval_metrics(actual, pred):
     r2 = r2_score(actual, pred)
     return rmse, mae, r2
 
+# ================================================          Warfield          ================================================
+
+# Logger section
+logging.basicConfig(level=logging.WARN)
+logger = logging.getLogger(__name__)
+
+# Warning configuration
+warnings.filterwarnings("ignore")
+
+# Set the seed
+np.random.seed(40)
+
 
 if __name__ == "__main__":
-    warnings.filterwarnings("ignore")
-    np.random.seed(40)
 
+    # Users informations
+    print("\n========== Start of run example ==========\n")
+
+    # Storage mode configuration 
+    storage_mode = 'file' # 'file' (in mlruns directory) or 'db' (in sqlite db)
+    path = "/home/ubuntu/train_DST_MLFLOW/mlruns" 
+    if storage_mode == 'file':
+        mlflow.set_tracking_uri("file://"+ path)
+    elif storage_mode == 'db':
+        mlflow.set_tracking_uri("http://localhost:5000")
+    # Just for debug
+    print("Tracking URI : ",mlflow.get_tracking_uri())
 
     # Manage the experiment Ids names
     experiment_name = "ElasticNet_wine" 
@@ -79,7 +136,10 @@ if __name__ == "__main__":
     alpha = float(sys.argv[1]) if len(sys.argv) > 1 else 0.5
     l1_ratio = float(sys.argv[2]) if len(sys.argv) > 2 else 0.5
 
+    ####======= mlflow store =======####
     with mlflow.start_run(experiment_id =experiment_id):
+
+        ####======= Modeling =======####
         lr = ElasticNet(alpha=alpha, l1_ratio=l1_ratio, random_state=42)
         lr.fit(train_x, train_y)
 
@@ -110,3 +170,7 @@ if __name__ == "__main__":
             mlflow.sklearn.log_model(lr, "model", registered_model_name="ElasticnetWineModel")
         else:
             mlflow.sklearn.log_model(lr, "/home/ubuntu/train_DST_MLFLOW/artifacts", registered_model_name="ElasticnetWineModel")
+
+    print(f"\nAll the data have been stored there : {mlflow.get_tracking_uri()}")
+    print("\n========== End of run ==========")
+    print("==========   %s seconds   ==========" % round((time.time() - start_time),2))
